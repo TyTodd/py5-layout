@@ -1,6 +1,13 @@
-from py5_markup.layout_manager import LayoutManager
+from py5_markup.layout_manager import Display
 
-class FlexBox(LayoutManager):
+class Block(Display):
+    default_width = "100%"
+    default_height = "auto"
+    default_min_width = "0"
+    default_max_width = "none"
+    default_min_height = "0"
+    default_max_height = "none"
+    
     def __init__(self):
         super().__init__()
 
@@ -56,7 +63,7 @@ class FlexBox(LayoutManager):
             raise NotImplementedError(f"Min height {element.style.min_height} is not supported")
         return ele_min_height
 
-    def get_width(self, element: "Element"):
+    def get_default_width(self, element: "Element"):
         width = element.style.width
         if element.style.width is 'auto':
             width = "100%"

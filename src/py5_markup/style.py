@@ -3,8 +3,8 @@ from dataclasses import dataclass, field, InitVar
 import py5
 @dataclass
 class Style:
-    background_color: InitVar[Tuple | int | float | str] = 255
-    color: InitVar[Tuple | int | str] = 0
+    background_color: InitVar[Tuple | int | float | str] = field(default="transparent", metadata={"inherited": False})
+    color: InitVar[Tuple | int | str] = field(default=0, metadata={"inherited": True})
     _background_color: Tuple | int | str = field(init=False)
     _color: Tuple | int | str = field(init=False)
 
