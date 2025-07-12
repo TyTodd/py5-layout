@@ -1,0 +1,21 @@
+[project]
+name = "py5-markup"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ty Todd",email = "swagginty@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "py5 (>=0.10.6a0,<0.11.0)",
+    "numpy>=1.26"
+]
+
+[tool.poetry]
+packages = [{include = "py5_markup", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
