@@ -7,3 +7,5 @@ def draw():
     py5.fill((0,0,255))
 
 py5.run_sketch()
+
+py5.color()

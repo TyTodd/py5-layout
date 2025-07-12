@@ -9,3 +9,10 @@ class LayoutManager:
 
     def get_height(self, element: Element):
         pass
+    
+    def get_x(self, element: Element):
+        pass
+    
+    def get_y(self, element: Element):
+        pass
+    
