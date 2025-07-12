@@ -1,29 +1,29 @@
-from style import Style
+from py5_markup.style import Style
 from dataclasses import asdict
 from typing import Literal, Optional, List
+from py5_markup.parent_manager import ParentManager
+
 class Element:
-    layout_type: Literal["block", "inline"] = "block"
-    def __init__(self, style: Optional[Style] = None, _parent: Optional["Element"] = None, _children: List["Element"] = [], **kwargs):
-        # self._parent = _parent
-        # self._children = _children
-        # if _parent is not None:
-        #     self.style = Style(**{**asdict(self._parent.style), **asdict(style)})
-        # else:
-        #     self.style = style or Style()
-        
-        # self.draw()
-        pass
+    _layout_type: Literal["block", "inline"] = "block"
+    _parent_manager: ParentManager = ParentManager()
+    def __init__(self, style: Optional[Style] = None, **kwargs):
+        self._parent_manager.register(self)
     
-    def post_register(self):
-        if self._parent is not None:
-            self.style = Style(**{**asdict(self._parent.style), **asdict(self.style)})
-        else:
-            self.style = self.style or Style()
-        self.draw()
-        
+    def __enter__(self):
+        Element._parent_manager.enter_context(self)
+        return self
     
-    def register(self):
-        pass
+    def __exit__(self, exc_type, exc_value, traceback):
+        Element._parent_manager.exit_context()
+    
+    def get_parent(self):
+        return Element._parent_manager.get_parent(self)
+    
+    def get_children(self):
+        return Element._parent_manager.get_children(self)
+    
+    def __hash__(self):
+        return id(self)
 
     def draw(self):
         pass
