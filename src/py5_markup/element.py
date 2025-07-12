@@ -2,13 +2,26 @@ from py5_markup.style import Style
 from dataclasses import asdict
 from typing import Literal, Optional, List
 from py5_markup.parent_manager import ParentManager
-
+from layout_managers import LayoutManager
+    
 class Element:
     _layout_type: Literal["block", "inline"] = "block"
     _parent_manager: ParentManager = ParentManager()
     def __init__(self, style: Optional[Style] = None, **kwargs):
+        if style is None:
+            style = Style()
+        self.style = style
         self._parent_manager.register(self)
-    
+        self._content_box = None
+        self._padding_box = None
+        self._border_box = None
+        self._margin_box = None
+        
+        
+        
+    def get_layout_manager(self):
+        return LayoutManager.get_layout_manager(self.style.display)
+        
     def __enter__(self):
         Element._parent_manager.enter_context(self)
         return self
@@ -24,35 +37,32 @@ class Element:
     
     def __hash__(self):
         return id(self)
-
-    def draw(self):
-        pass
-
-    def update(self):
+    
+    def place_children(self):
         pass
     
-    def get_width(self):
-        pass      
-    
-    def get_height(self):
-        pass
+    def get_content_size(self):
+        if self._content_box is not None:
+            return {
+                "width": self._content_box.width,
+                "height": self._content_box.height,
+            }
+        content_width = 0
+        content_height = 0
+        for child in self.get_children():
+            content_width = max(content_width, child.get_content_size()["width"])
+            content_height = max(content_height, child.get_content_size()["height"])
+        return {
+            "width": content_width,
+            "height": content_height
+        }
         
     
-    def set_child_positions(self):
-        pass
-            
-    def justify_content(self, type: Literal["start", "end", "center", "space-between", "space-around", "space-evenly"]):
-        pass
-        
+    @property
+    def content_box(self):
+        if self._content_box is None:
+            self._content_box = 
     
-    def set_flex_position(self):
-        pass
-    
-    def set_relative_position(self):
-        pass
-    
-    def set_absolute_position(self):
-        pass
             
         
         
