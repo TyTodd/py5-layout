@@ -30,4 +30,5 @@ py5.run_sketch()
 ```
 
 This creates the following animated layout:
+
 ![animated layout](./examples/simple_example.gif)
