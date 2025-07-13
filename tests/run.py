@@ -21,6 +21,7 @@ def draw():
     count += 1
     with layout:
         with Div(style=Style(background_color=(127*sin(count/10), 0, 127*cos(count/10)), width=count//2, height="50%")):
+            Text("The quick brown fox jumps over the lazy dog")
             with Div(style=Style(background_color=(0,255,0))):
                 Div(style=Style(background_color=(255,0,0)))
  

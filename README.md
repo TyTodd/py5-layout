@@ -32,3 +32,17 @@ py5.run_sketch()
 This creates the following animated layout:
 
 ![animated layout](./examples/simple_example.gif)
+
+Todo:
+
+- [ ] Style inheritance
+- [ ] Style Merging
+- [ ] Text element
+- [ ] hover, focus, etc. pseudo-classes
+- [ ] Button element
+- [ ] rem, em, vw, vh, etc. units
+- [ ] CSS Classes and ids
+- [ ] CSS Files
+- [ ] CSS Variables
+- [ ] Style type checking
+- [ ] color keyword arguments (black, white, red, green, blue, etc.)

@@ -1,5 +1,5 @@
 from typing import Tuple, Optional, Literal, Any, ClassVar, Iterable
-from dataclasses import dataclass, field, InitVar, fields, MISSING
+from dataclasses import dataclass, field, InitVar, fields, MISSING, asdict
 import py5
 import time
 
@@ -15,6 +15,7 @@ SizeType = float | str | Literal["auto"] # TODO: Add GlobalType
 MaxSizeType = float | str | Literal["none"] # TODO: Add GlobalType
 MinSizeType = float | str | Literal["auto"] # TODO: Add GlobalType
 PaddingType = float | str # TODO: Add GlobalType
+ColorType = str | Tuple | int | float
 
 @dataclass(frozen=True)
 class Style():
@@ -26,44 +27,44 @@ class Style():
     background_attachment = NotImplemented
     background_blend_mode = NotImplemented
     background_clip = NotImplemented
-    background_color: Tuple | int | float | str = field(default="transparent", metadata=gen_metadata(inherited=False))
+    background_color: ColorType = field(default="transparent", metadata=gen_metadata(inherited=False))
     background_image: str = NotImplemented
     background_origin = NotImplemented
     background_position = NotImplemented
     background_repeat = NotImplemented
     background_size = NotImplemented
-    border = NotImplemented
-    border_bottom = NotImplemented
-    border_bottom_color = NotImplemented
-    border_bottom_left_radius = NotImplemented
-    border_bottom_right_radius = NotImplemented
-    border_bottom_style = NotImplemented
-    border_bottom_width = NotImplemented
-    border_collapse = NotImplemented
-    border_color = NotImplemented
+    border: str = NotImplemented
+    border_bottom: str = NotImplemented
+    border_bottom_color: str = NotImplemented
+    border_bottom_left_radius: str = NotImplemented
+    border_bottom_right_radius: str = NotImplemented
+    border_bottom_style: str = NotImplemented
+    border_bottom_width: str = NotImplemented
+    border_collapse: str = NotImplemented
+    border_color: str = NotImplemented
     border_image = NotImplemented
     border_image_outset = NotImplemented
     border_image_repeat = NotImplemented
     border_image_slice = NotImplemented
     border_image_source = NotImplemented
     border_image_width = NotImplemented
-    border_left = NotImplemented
-    border_left_color = NotImplemented
-    border_left_style = NotImplemented
-    border_left_width = NotImplemented
-    border_radius = NotImplemented
-    border_right_color = NotImplemented
-    border_right = NotImplemented
-    border_right_style = NotImplemented
-    border_right_width = NotImplemented
-    border_top_color = NotImplemented
-    border_top = NotImplemented
-    border_top_left_radius = NotImplemented
-    border_top_right_radius = NotImplemented
-    border_top_style = NotImplemented
-    border_top_width = NotImplemented
-    border_style = NotImplemented
-    border_spacing = NotImplemented
+    border_left: str = NotImplemented
+    border_left_color: str = NotImplemented
+    border_left_style: str = NotImplemented
+    border_left_width: str = NotImplemented
+    border_radius: str = NotImplemented
+    border_right_color: str = NotImplemented
+    border_right: str = NotImplemented
+    border_right_style: str = NotImplemented
+    border_right_width: str = NotImplemented
+    border_top_color: str = NotImplemented
+    border_top: str = NotImplemented
+    border_top_left_radius: str = NotImplemented
+    border_top_right_radius: str = NotImplemented
+    border_top_style: str = NotImplemented
+    border_top_width: str = NotImplemented
+    border_style: str = NotImplemented
+    border_spacing: str = NotImplemented
     border_width: int | str | Tuple = NotImplemented
     bottom: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     box_shadow = NotImplemented
@@ -73,6 +74,7 @@ class Style():
     caret_color = NotImplemented
     clear = NotImplemented
     clip = NotImplemented
+    color: ColorType = field(default=(0,0,0), metadata=gen_metadata(inherited=True))
     column_count = NotImplemented
     column_fill = NotImplemented
     column_gap = NotImplemented
@@ -91,21 +93,21 @@ class Style():
     display: Literal["flex", "none"] = field(default="flex", metadata=gen_metadata(inherited=False))
     empty_cells = NotImplemented
     filter = NotImplemented
-    flex = NotImplemented
-    flex_basis = NotImplemented
-    flex_direction = NotImplemented
-    flex_flow = NotImplemented
-    flex_grow = NotImplemented
-    flex_shrink = NotImplemented
-    flex_wrap = NotImplemented
-    font_family = NotImplemented
-    font_kerning = NotImplemented
-    font_size_adjust = NotImplemented
-    font_size = NotImplemented
-    font_stretch = NotImplemented
-    font_style = NotImplemented
-    font_variant = NotImplemented
-    font_weight = NotImplemented
+    flex: str = NotImplemented
+    flex_basis: str = NotImplemented
+    flex_direction: str = NotImplemented
+    flex_flow: str = NotImplemented
+    flex_grow: str = NotImplemented
+    flex_shrink: str = NotImplemented
+    flex_wrap: str = NotImplemented
+    font_family: str = NotImplemented
+    font_kerning: str = NotImplemented
+    font_size_adjust: str = NotImplemented
+    font_size: str = NotImplemented
+    font_stretch: str = NotImplemented
+    font_style: str = NotImplemented
+    font_variant: str = NotImplemented
+    font_weight: str = NotImplemented
     grid = NotImplemented
     grid_area = NotImplemented
     grid_auto_columns = NotImplemented
@@ -188,7 +190,7 @@ class Style():
     text_shadow = NotImplemented
     top: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     # Transform properties are not included and there is no current plan to include them
-    unicode_bidi = NotImplemented
+    unicode_bidi: str = NotImplemented
     user_select = NotImplemented
     vertical_align = NotImplemented
     visibility = NotImplemented
@@ -199,7 +201,7 @@ class Style():
     word_wrap = NotImplemented
     will_change = NotImplemented
     writing_mode = NotImplemented
-    z_index = NotImplemented
+    z_index: str = NotImplemented
     
     def __init__(self, **kwargs):
         
@@ -207,17 +209,21 @@ class Style():
 
         # Initialize fields but don't handle defaults yet to save memory
         for k in kwargs:
-            if k in self.__dataclass_fields__:
+            if k in self.__dataclass_fields__ and self.__dataclass_fields__[k].default != NotImplemented:
                 object.__setattr__(self, k, kwargs[k])
+            elif k in self.__dataclass_fields__:
+                raise NotImplementedError(f"Style property '{k}' is not implemented yet. But we're working on it! Wanna help? 👀 \n👉 https://github.com/TyTodd/py5-layout#")
             else:
-                raise TypeError(f"'{k}' is not a valid parameter for Style")
+                raise TypeError(f"'{k}' is not a valid parameter for Style. Should it be? Make a PR! \n👉 https://github.com/TyTodd/py5-layout#")
             
         
     def __getattr__(self, name: str) -> Any:
         if name in self._order:
             return getattr(self, name)
-        elif name in self.__fields__:
+        elif name in self.__fields__ and self.__fields__[name].default != NotImplemented:
             return self.__fields__[name].default
+        elif name in self.__fields__:
+            raise NotImplementedError(f"Style property '{name}' is not implemented yet. But we're working on it! Wanna help? 👀 \n👉 https://github.com/TyTodd/py5-layout#")
         else:
             raise AttributeError(f"'Style' object does not support property: '{name}'")
     
@@ -270,4 +276,55 @@ class Style():
         return value_type, value
 
     def __or__(self, other: "Style") -> "Style":
-        raise NotImplementedError(f"Merging not implemented yet")
+        return self.merge(other)
+    
+    def merge(self, other: "Style") -> "Style":
+        new_dict = {**self.to_dict(), **other.to_dict()}
+        return Style(**new_dict)
+
+    def inherit_from(self, other: Optional["Style"]) -> "Style":
+        """
+        Inherits the values of the other style object. Resolves global key words 'inherit' and 'unset'. 
+        For fields marked as 'inherited' = True, overrides the value of parent if undefined.
+        Params:
+            other: Optional[Style] 
+                The style to inherit from. If set to None, all args marked inherit will be set to the default value.
+        Returns:
+            Style: A new style object with the values inherited.
+        """
+        self_defined = vars(self)
+        new_dict = {}
+        for field in fields(self):
+            if field.default == NotImplemented:
+                continue
+            # if key word is unset, act as if the value is not set
+            field_is_defined = field.name in self_defined and getattr(self, field.name) != "unset"
+            # Don't inherit if the value is explicitly set
+            if field_is_defined and getattr(self, field.name) != "inherit":
+                new_dict[field.name] = getattr(self, field.name)
+            # Inherit if inherit keyword is used 
+            elif field_is_defined and getattr(self, field.name) == "inherit" and other is not None: # CAVEAT: if other is None, the value will be set to the default value. We can effectively do this by not setting the value at all and save memory.
+                new_dict[field.name] = getattr(other, field.name)
+            # Inheritance by default
+            elif not field_is_defined and field.metadata["inherited"] and other is not None:
+                new_dict[field.name] = getattr(other, field.name) # will return the default value if not set:
+                
+        return Style(**new_dict)
+    
+    def resolve_globals(self, other: Optional["Style"] = None) -> "Style": # TODO: add custom globals too like --color-primary
+        """
+        Resolves the global values initial, inherit, and unset.
+        Params:
+            other: Optional[Style] = None
+                The style to inherit from. If not provided, all inherit values will be set to the default value.
+        Returns:
+            Style: A new style object with the globals resolved.
+        """
+        # inherited = self.inherit_from(other)
+        # for field, value in vars(inherited).items():
+        #     if value == ""
+        pass
+        
+    def to_dict(self) -> dict[str, Any]:
+        return {k: getattr(self, k) for k in self._order if k[0] != "_"}
+        
