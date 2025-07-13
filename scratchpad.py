@@ -1,46 +1,50 @@
-# def get_layout_manger(display: str):
-#     snake_case = display.replace(" ", "_")
-#     layout_manager_cls_name = ""
-#     for i in range(len(snake_case) - 1): # stride through string with window size 2 stride 1
-#         window = snake_case[i:i+2]
-#         print("window", window)
-#         if window[0] == "-":
-#             layout_manager_cls_name += window[1].upper()
-#             i +=1
-#         else:
-#             layout_manager_cls_name += window[0] if i < len(snake_case) - 1 else window[1]
-#     print(layout_manager_cls_name)
+from poga.libpoga_capi import (
+    YGNodeNew,
+    YGNodeStyleSetWidth,
+    YGNodeStyleSetHeight,
+    YGNodeStyleSetFlexGrow,
+    YGNodeInsertChild,
+    YGNodeCalculateLayout,
+    YGNodeFreeRecursive,
+    YGUndefined,
+    YGDirection,
+    YGFlexDirection,
+    YGAlign,
+    YGNodeStyleSetFlexDirection,
+    YGNodeGetChildCount
+)
 
-def get_layout_manger(display: str):
-    # layout_manager_cls_name = display.replace(" ", "_")
-    layout_manager_cls_name = display
-    for c in layout_manager_cls_name: # stride through string with window size 2 stride 1
-        if f"-{c}" in layout_manager_cls_name:
-            layout_manager_cls_name = layout_manager_cls_name.replace(f"-{c}", c.upper())
-        if f" {c}" in layout_manager_cls_name:
-            layout_manager_cls_name = layout_manager_cls_name.replace(f" {c}",f"_{c.upper()}")
-    layout_manager_cls_name = layout_manager_cls_name[0].upper() + layout_manager_cls_name[1:]
-    print(layout_manager_cls_name)
+# Create root and two children
+root = YGNodeNew()
+YGNodeStyleSetWidth(root, 400)
+YGNodeStyleSetHeight(root, 200)
+YGNodeStyleSetFlexDirection(root, YGFlexDirection.Row)
 
-def get_display_name(layout_manager_cls_name: str):
-    display = layout_manager_cls_name
-    for i, c in enumerate(display):
-        if f"_{c}" in display:
-            display = display.replace(f"_{c}", f" {c.lower()}")
-        if i > 0 and display[i-1].islower() and c.isupper():
-            prev = display[i-1]
-            display = display.replace(f"{prev}{c}", f"{prev}-{c.lower()}")
-    display = display[0].lower() + display[1:]
-    return display
-        
-    
+child1 = YGNodeNew()
+child2 = YGNodeNew()
+YGNodeStyleSetFlexGrow(child1, 1.0)
+YGNodeStyleSetFlexGrow(child2, 2.0)
 
-# get_layout_manger("flex container")
-# get_layout_manger("flex")
-# get_layout_manger("inline-flex")
-# get_layout_manger("block flow-root")
+# Insert children under root
+YGNodeInsertChild(root, child1, 0)
+YGNodeInsertChild(root, child2, 1)
 
-get_display_name("Flex_Container")
-get_display_name("Flex")
-get_display_name("InlineFlex")
-get_display_name("Block_FlowRoot")
+print("old YGNodeGetChildCount", YGNodeGetChildCount(root))
+# Compute layout (undefined auto size parent)
+YGNodeCalculateLayout(root, 500, 500, YGDirection.LTR)
+
+print("new YGNodeGetChildCount", YGNodeGetChildCount(root))
+# Read results
+from poga.libpoga_capi import YGNodeLayoutGetLeft, YGNodeLayoutGetWidth
+print("Child1 x =", YGNodeLayoutGetLeft(child1), "width =", YGNodeLayoutGetWidth(child1))
+print("Child2 x =", YGNodeLayoutGetLeft(child2), "width =", YGNodeLayoutGetWidth(child2))
+
+# Cleanup
+YGNodeFreeRecursive(root)
+
+
+def test_kwargs(**kwargs):
+    for k, v in kwargs.items():
+        print(k, v)
+
+

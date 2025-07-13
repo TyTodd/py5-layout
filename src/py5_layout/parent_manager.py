@@ -1,20 +1,27 @@
 from typing import List, Dict, TYPE_CHECKING
+from dataclasses import dataclass
+from py5_layout.style import Style
 
 if TYPE_CHECKING:
-    from py5_markup.element import Element
+    from py5_layout.element import Element
 
+    
 class ParentManager:
     def __init__(self):
-        self.parent_map: Dict["Element", "Element"] = {}
+        self.parent_map: Dict["Element", ("Element", int)] = {}
         self.context_stack: List["Element"] = []
         self.children_map: Dict["Element", List["Element"]] = {}
+        
     
     def register(self, element: "Element"):
         if len(self.context_stack) > 0:
-            self.parent_map[element] = self.context_stack[-1]
-            if self.context_stack[-1] not in self.children_map:
-                self.children_map[self.context_stack[-1]] = []
-            self.children_map[self.context_stack[-1]].append(element)
+            parent = self.context_stack[-1]
+            if parent not in self.children_map:
+                self.children_map[parent] = []
+            self.children_map[parent].append(element)
+            
+            self.parent_map[element] = (parent, len(self.children_map[parent])-1)
+        
     
     def get_parent(self, element: "Element"):
         return self.parent_map.get(element, None)

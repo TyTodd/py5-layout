@@ -511,6 +511,40 @@ dev = ["pre-commit", "tox"]
 testing = ["coverage", "pytest", "pytest-benchmark"]
 
 [[package]]
+name = "poga"
+version = "0.1.19"
+description = "Python bindings for YogaLayout"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "poga-0.1.19-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:dcf54dec0416585e75de001366c892e696480e608102cbcd97a319af94b01b1d"},
+    {file = "poga-0.1.19-cp310-cp310-macosx_14_0_arm64.whl", hash = "sha256:ba224a23a0c38597729a79e539496ceb6f9c610e1956e8b2b4e444828db1a393"},
+    {file = "poga-0.1.19-cp310-cp310-manylinux_2_39_x86_64.whl", hash = "sha256:578b5e0141b197a32a0fc7135378467c7be59c8b155b8712f806a8750d3eaac3"},
+    {file = "poga-0.1.19-cp310-cp310-win_amd64.whl", hash = "sha256:3a95c91feb6e1e9acc0e2e64816c0d0cb3965ff20e57d629e4e92cd8487f8dd5"},
+    {file = "poga-0.1.19-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:fe92215c2e31f05ccfe76f1adae00f7a641bf26204d241e5c4f191a10333603a"},
+    {file = "poga-0.1.19-cp311-cp311-macosx_14_0_arm64.whl", hash = "sha256:ef95a9a88ec9e3f3a8b117f6e186f61e7d021e7e60646158efc9720c0d743c9c"},
+    {file = "poga-0.1.19-cp311-cp311-manylinux_2_39_x86_64.whl", hash = "sha256:8d556d3aa2e557884530174dc7433e7f0fec6ccc226489aa50be6c70b4303f10"},
+    {file = "poga-0.1.19-cp311-cp311-win_amd64.whl", hash = "sha256:44d790e285dd1643e2e1b1e8635bfc551864b1baa4f874c9089584538026a4eb"},
+    {file = "poga-0.1.19-cp312-cp312-macosx_10_13_universal2.whl", hash = "sha256:d06d64d951df2f815c5e6ace77b9932bd07fc3d612cb2270cf1ab61f375df3b6"},
+    {file = "poga-0.1.19-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:34bc6127b1b26e7df29cc2330264730ec804cbf262b5e95be59734ec0711022e"},
+    {file = "poga-0.1.19-cp312-cp312-manylinux_2_39_x86_64.whl", hash = "sha256:ea2be1814e1d684223e0737ac6763ba21350c271a1944222e30b39b345cec2fa"},
+    {file = "poga-0.1.19-cp312-cp312-win_amd64.whl", hash = "sha256:026d2fc53c3b8e4bc735ffa6949347484d5bde8c9599f4b275ad8f7a6529c9b8"},
+    {file = "poga-0.1.19-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:2f59d8ba01c4631aecacaa901da7958a9a49670dba8ba295f55e4c276067f1ff"},
+    {file = "poga-0.1.19-cp38-cp38-macosx_14_0_arm64.whl", hash = "sha256:9a598a4b42ae314e582b506d9072e4cadafbcee009adbc1a7f0ffef56345d62a"},
+    {file = "poga-0.1.19-cp38-cp38-manylinux_2_39_x86_64.whl", hash = "sha256:b58e2c2c5d4c1a4952121907220571a7218ddb959263b93608634309e17049e1"},
+    {file = "poga-0.1.19-cp38-cp38-win_amd64.whl", hash = "sha256:266721cd1857a3c8e98be8db288e490e55ef4ff8e33ea2d376b4c98a89ca7c3e"},
+    {file = "poga-0.1.19-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:c51ff842533d35d0f8c37abf73b2c1d663804e6456a85032d3499b53f437e337"},
+    {file = "poga-0.1.19-cp39-cp39-macosx_14_0_arm64.whl", hash = "sha256:3cfce5e08e366ea3f26154c5ad46711b4531121f44e41fe03e12aee62c6f7c27"},
+    {file = "poga-0.1.19-cp39-cp39-manylinux_2_39_x86_64.whl", hash = "sha256:3e72ab99bcf61cde6762d85df842e37d988dfdaef870e0547b8145a20ad040f4"},
+    {file = "poga-0.1.19-cp39-cp39-win_amd64.whl", hash = "sha256:935733cfdee0897bb031f89d471c76ee1fa7dc16fefc09cd215ba0a55636a254"},
+    {file = "poga-0.1.19.tar.gz", hash = "sha256:93a28fcf60a43fe53170c0b79763f81c906c8336691ad8f406db699696d78f7c"},
+]
+
+[package.dependencies]
+pybind11 = ">=2.10.0"
+
+[[package]]
 name = "py5"
 version = "0.10.6a0"
 description = "Processing for CPython"
@@ -536,6 +570,21 @@ stackprinter = ">=0.2.11"
 [package.extras]
 extras = ["colour (>=0.1.5)", "matplotlib (>=3.9)", "py5jupyter (>=0.2.0a0)", "shapely (>=2.0)", "trimesh (>=4.3)"]
 jupyter = ["py5jupyter (>=0.2.0a0)"]
+
+[[package]]
+name = "pybind11"
+version = "3.0.0"
+description = "Seamless operability between C++11 and Python"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "pybind11-3.0.0-py3-none-any.whl", hash = "sha256:7c5cac504da5a701b5163f0e6a7ba736c713a096a5378383c5b4b064b753f607"},
+    {file = "pybind11-3.0.0.tar.gz", hash = "sha256:c3f07bce3ada51c3e4b76badfa85df11688d12c46111f9d242bc5c9415af7862"},
+]
+
+[package.extras]
+global = ["pybind11-global (==3.0.0)"]
 
 [[package]]
 name = "pycodestyle"
@@ -4317,4 +4366,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9"
-content-hash = "706bc3cfb478654a5e3b01a61d7cecff8f3dd277c1005914584c6b720109dc1d"
+content-hash = "48ffd4fc22067f2d32c165ef88ac9c64d53f182dfc495d2abf0fc708e0c5ebd6"
