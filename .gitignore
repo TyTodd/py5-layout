@@ -1,0 +1,8 @@
+.vscode
+.pytest_cache
+**/__pycache__
+.DS_Store
+**/__pycache__/
+node_tree.png
+node_tree
+node_tree.pdf

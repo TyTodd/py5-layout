@@ -1,7 +1,7 @@
 [project]
 name = "py5-layout"
 version = "0.1.0"
-description = ""
+description = "A layout and styling library for py5"
 authors = [
     {name = "Ty Todd",email = "swagginty@gmail.com"}
 ]
@@ -22,3 +22,6 @@ packages = [{include = "py5_layout", from = "src"}]
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+"Homepage" = "https://github.com/TyTodd/py5-layout"
