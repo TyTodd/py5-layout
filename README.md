@@ -299,6 +299,10 @@ Todo:
 - [ ] CSS Variables
 - [ ] Style type checking
 
-```
+### Licensing Notice
 
-```
+This project uses [py5](https://github.com/py5coding/py5), which is licensed under the GNU Lesser General Public License v2.1 (LGPL-2.1).
+
+See [`py5` license](https://github.com/py5coding/py5/blob/main/LICENSE) for more details.
+
+This project also uses [poga](https://github.com/dzhsurf/poga), licensed under the MIT License:
