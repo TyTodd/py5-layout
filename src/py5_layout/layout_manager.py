@@ -2,10 +2,15 @@ from typing import Tuple, TYPE_CHECKING, Any, Literal, Dict, Set
 from dataclasses import dataclass
 from poga.libpoga_capi import *
 from py5_layout.style import Style
+import ctypes
 
 if TYPE_CHECKING:
     from py5_layout.element import Element
 
+
+# YGMeasureFunc = ctypes.CFUNCTYPE(
+#     YGSize, YGNodeRef, ctypes.c_float, ctypes.c_int, ctypes.c_float, ctypes.c_int
+# )
 
 align_arg_to_poga: dict[str, YGAlign] = {
     "auto": YGAlign.Auto,
@@ -62,6 +67,11 @@ class LayoutManager:
             self.id_node_map[element._id] = YGNodeNew()
         if element.get_parent() is None:
             return
+        
+        if element._node_type == "Text":    
+            YGNodeSetNodeType(self.id_node_map[element._id], YGNodeType.Text)
+            measure_func = lambda node, w, wm, h, hm: element.measure_callback(w, wm, h, hm)
+            YGNodeSetMeasureFunc(self.id_node_map[element._id], measure_func)
         parent, index = element.get_parent()
         parent_node = self.id_node_map[parent._id]
         element_node = self.id_node_map[element._id]

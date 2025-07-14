@@ -1,11 +1,12 @@
-from typing import Tuple, Optional, Literal, Any, ClassVar, Iterable
+from typing import Tuple, Optional, Literal, Any, ClassVar, Iterable, List
 from dataclasses import dataclass, field, InitVar, fields, MISSING, asdict
 import py5
 import time
+import webcolors
 
 
-def gen_metadata(inherited: bool = False, handler: Optional[str] = None, precedence: Optional[int] = None):
-    return {"inherited": inherited, "handler": handler, "precedence": precedence}
+def gen_metadata(inherited: bool = False, ignore: List[str] = []):
+    return {"inherited": inherited, "ignore": ignore}
 
 GlobalType = Literal["inherit", "initial"]
 AlignType = Literal["auto", "flex-start", "center", "flex-end", "stretch", "baseline", "space-between", "space-around"]
@@ -100,12 +101,12 @@ class Style():
     flex_grow: str = NotImplemented
     flex_shrink: str = NotImplemented
     flex_wrap: str = NotImplemented
-    font_family: str = NotImplemented
+    font_family: str = field(default="Serif", metadata=gen_metadata(inherited=True))
     font_kerning: str = NotImplemented
     font_size_adjust: str = NotImplemented
-    font_size: str = NotImplemented
+    font_size: int | str = field(default=16, metadata=gen_metadata(inherited=True))
     font_stretch: str = NotImplemented
-    font_style: str = NotImplemented
+    font_style: str = field(default="normal", metadata=gen_metadata(inherited=True))
     font_variant: str = NotImplemented
     font_weight: str = NotImplemented
     grid = NotImplemented
@@ -133,7 +134,7 @@ class Style():
     justify_content: JustifyType | GlobalType = field(default="flex-start", metadata=gen_metadata(inherited=False))
     left: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     letter_spacing = NotImplemented
-    line_height = NotImplemented
+    line_height: float | str = field(default=1.2, metadata=gen_metadata(inherited=True))
     list_style = NotImplemented
     list_style_image = NotImplemented
     list_style_position = NotImplemented
@@ -177,7 +178,7 @@ class Style():
     parentRule = NotImplemented
     table_layout = NotImplemented
     tab_size = NotImplemented
-    text_align = NotImplemented
+    text_align: Literal["left", "center", "right"] = field(default="left", metadata=gen_metadata(inherited=True))
     text_align_last = NotImplemented
     text_decoration = NotImplemented
     text_decoration_color = NotImplemented
@@ -248,13 +249,12 @@ class Style():
             return [(k, getattr(self, k)) for k in self._order if k[0] != "_"]
     
     @staticmethod
-    def parse_value(value: str | int) -> Tuple[Literal["literal", "%", "px", "tuple", "value"], str | int]:
-        value_type: Literal["literal", "%", "px", "tuple", "value"]
+    def parse_value(value: str | int | tuple | float, color = False) -> Tuple[Tuple | Literal["literal", "%", "px", "value", "color"], str | int]:
+        value_type: Literal["literal", "%", "px", "value", "color"]
         value: str | int
         if isinstance(value, tuple):
-            value_type = "tuple"
             parsed_values = [Style.parse_value(v) for v in value]
-            value = tuple(zip(*parsed_values))
+            value_type, value = tuple(zip(*parsed_values))
         elif isinstance(value, str):
             if value.endswith("px"):
                 value_type = "px"
@@ -266,6 +266,12 @@ class Style():
                 raise NotImplementedError(f"PTML does not support em units yet")
             elif value.endswith("rem"):
                 raise NotImplementedError(f"PTML does not support rem units yet")
+            elif value.startswith("#"):
+                value_type = "color"
+                value = py5.color(value)
+            elif color:
+                value_type = ("value", "value", "value")
+                value = tuple(webcolors.name_to_rgb(value))
             else:
                 value_type = "literal"
         elif isinstance(value, int) or isinstance(value, float):
@@ -306,11 +312,9 @@ class Style():
             elif field_is_defined and getattr(self, field.name) == "inherit" and other is not None: # CAVEAT: if other is None, the value will be set to the default value. We can effectively do this by not setting the value at all and save memory.
                 new_dict[field.name] = getattr(other, field.name)
             # Inheritance by default
-            elif not field_is_defined and field.metadata["inherited"] and other is not None:
+            elif not field_is_defined and field.metadata["inherited"] and other is not None: 
                 new_dict[field.name] = getattr(other, field.name) # will return the default value if not set:
-                
         return Style(**new_dict)
-    
     def resolve_globals(self, other: Optional["Style"] = None) -> "Style": # TODO: add custom globals too like --color-primary
         """
         Resolves the global values initial, inherit, and unset.
@@ -323,8 +327,7 @@ class Style():
         # inherited = self.inherit_from(other)
         # for field, value in vars(inherited).items():
         #     if value == ""
-        pass
+        raise NotImplementedError("Not implemented yet")
         
     def to_dict(self) -> dict[str, Any]:
         return {k: getattr(self, k) for k in self._order if k[0] != "_"}
-        

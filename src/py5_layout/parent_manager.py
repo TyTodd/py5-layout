@@ -1,4 +1,4 @@
-from typing import List, Dict, TYPE_CHECKING
+from typing import List, Dict, TYPE_CHECKING, Tuple, Optional
 from dataclasses import dataclass
 from py5_layout.style import Style
 
@@ -23,15 +23,27 @@ class ParentManager:
             self.parent_map[element] = (parent, len(self.children_map[parent])-1)
         
     
-    def get_parent(self, element: "Element"):
+    def get_parent(self, element: "Element") -> Optional[Tuple["Element", int]]:
+        """
+        Returns the parent of the element and the index of the element in the parent's children list.
+        """
         return self.parent_map.get(element, None)
     
-    def get_children(self, element: "Element"):
+    def get_children(self, element: "Element") -> List["Element"]:
+        """
+        Returns the children of the element.
+        """
         return self.children_map.get(element, [])
     
     def enter_context(self, element: "Element"):
+        """
+        Pushes the element onto the context stack.
+        """
         self.context_stack.append(element)
     
     def exit_context(self):
+        """
+        Pops the element from the context stack.
+        """
         self.context_stack.pop()
     

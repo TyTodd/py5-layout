@@ -33,10 +33,20 @@ This creates the following animated layout:
 
 ![animated layout](./examples/simple_example.gif)
 
+## Installation
+
+Install the library:
+
+```bash
+pip install py5-layout
+```
+
+Follow instructions to install Java 17 from py5's website [here](https://py5coding.org/content/install.html#install-java)
+
 Todo:
 
-- [ ] Style inheritance
-- [ ] Style Merging
+- [x] Style inheritance
+- [x] Style Merging
 - [ ] Text element
 - [ ] hover, focus, etc. pseudo-classes
 - [ ] Button element

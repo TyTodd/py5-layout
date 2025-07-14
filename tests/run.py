@@ -1,5 +1,5 @@
 import py5
-from py5_layout import Py5Layout, Div, Style
+from py5_layout import Py5Layout, Div, Style, Text
 from poga.libpoga_capi import *
 from math import sin, cos
 from time import time

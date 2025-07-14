@@ -1,5 +1,5 @@
 from py5_layout.style import Style
-from py5_layout.div import Div
+from py5_layout.components import Div
 from py5_layout.py5_layout import Py5Layout
 from dataclasses import asdict
 import pytest
