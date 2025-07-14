@@ -1,6 +1,6 @@
 # Py5 Layout
 
-Py5 Layout is a library that extends Py5 with a python based markup language. Styles are mirrored from CSS. The library is compatible with your normal python workflow/libraries. You can use logic defined in python to control the layout and the styles.
+Py5 Layout is a library that extends Py5 with a python based markup language. Styles are mirrored from CSS. The library is compatible with your normal python workflow/libraries. You can use logic defined in python to control the layout and the styles. The library uses Yoga as its layout engine, the same engine used by React Native. Special thanks to [dzhsurf/poga](https://github.com/dzhsurf/poga) for the Yoga bindings.
 
 Example:
 
