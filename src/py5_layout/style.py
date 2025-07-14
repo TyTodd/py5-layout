@@ -69,65 +69,23 @@ class Style():
     border_width: int | str | Tuple = NotImplemented
     bottom: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     box_shadow = NotImplemented
-    box_decoration_break = NotImplemented
     box_sizing = NotImplemented
-    caption_side = NotImplemented
-    caret_color = NotImplemented
-    clear = NotImplemented
-    clip = NotImplemented
     color: ColorType = field(default=(0,0,0), metadata=gen_metadata(inherited=True))
-    column_count = NotImplemented
-    column_fill = NotImplemented
     column_gap = NotImplemented
-    columns = NotImplemented
-    column_rule_color = NotImplemented
-    column_rule = NotImplemented
-    column_rule_style = NotImplemented
-    column_rule_width = NotImplemented
-    column_span = NotImplemented
-    column_width = NotImplemented
-    content = NotImplemented
-    cursor = NotImplemented
-    counter_increment = NotImplemented
-    counter_reset = NotImplemented
     direction: Literal["ltr", "rtl", "inherit", "initial"] = field(default="ltr", metadata=gen_metadata(inherited=True))
     display: Literal["flex", "none"] = field(default="flex", metadata=gen_metadata(inherited=False))
-    empty_cells = NotImplemented
     filter = NotImplemented
-    flex: str = NotImplemented
+    flex: int = field(default=0, metadata=gen_metadata(inherited=False))
     flex_basis: str = NotImplemented
-    flex_direction: str = NotImplemented
-    flex_flow: str = NotImplemented
-    flex_grow: str = NotImplemented
-    flex_shrink: str = NotImplemented
-    flex_wrap: str = NotImplemented
+    flex_direction: Literal["row", "row-reverse", "column", "column-reverse"] = field(default="column", metadata=gen_metadata(inherited=False))
+    flex_grow: float = field(default=0, metadata=gen_metadata(inherited=False))
+    flex_shrink: float = field(default=0, metadata=gen_metadata(inherited=False))
+    flex_wrap: Literal["nowrap", "wrap", "wrap-reverse"] = field(default="nowrap", metadata=gen_metadata(inherited=False))
     font_family: str = field(default="Serif", metadata=gen_metadata(inherited=True))
-    font_kerning: str = NotImplemented
-    font_size_adjust: str = NotImplemented
     font_size: int | str = field(default=16, metadata=gen_metadata(inherited=True))
-    font_stretch: str = NotImplemented
     font_style: str = field(default="normal", metadata=gen_metadata(inherited=True))
-    font_variant: str = NotImplemented
-    font_weight: str = NotImplemented
-    grid = NotImplemented
-    grid_area = NotImplemented
-    grid_auto_columns = NotImplemented
-    grid_auto_flow = NotImplemented
-    grid_auto_rows = NotImplemented
-    grid_column = NotImplemented
-    grid_column_end = NotImplemented
-    grid_column_gap = NotImplemented
-    grid_column_start = NotImplemented
-    grid_gap = NotImplemented
-    grid_row = NotImplemented
-    grid_row_end = NotImplemented
-    grid_row_gap = NotImplemented
-    grid_row_start = NotImplemented
-    grid_template = NotImplemented
-    grid_template_areas = NotImplemented
-    grid_template_columns = NotImplemented
-    grid_template_rows = NotImplemented
-    hanging_punctuation = NotImplemented
+    font_variant = NotImplemented
+    font_weight = NotImplemented
     height: SizeType = field(default="auto", metadata=gen_metadata(inherited=False))
     hyphens = NotImplemented
     isolation = NotImplemented
@@ -135,10 +93,6 @@ class Style():
     left: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     letter_spacing = NotImplemented
     line_height: float | str = field(default=1.2, metadata=gen_metadata(inherited=True))
-    list_style = NotImplemented
-    list_style_image = NotImplemented
-    list_style_position = NotImplemented
-    list_style_type = NotImplemented
     margin_bottom: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     margin_left: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     margin_right: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
@@ -148,60 +102,37 @@ class Style():
     min_height: MinSizeType = field(default="auto", metadata=gen_metadata(inherited=False))
     min_width: MinSizeType = field(default="auto", metadata=gen_metadata(inherited=False))
     mix_blend_mode = NotImplemented
-    mask_image = NotImplemented
     object_fit = NotImplemented
-    object_position = NotImplemented
-    order = NotImplemented
     outline_color = NotImplemented
     outline_offset = NotImplemented
     outline_style = NotImplemented
     outline_width = NotImplemented
-    overflow_x = NotImplemented
-    overflow_y = NotImplemented
+    overflow = NotImplemented
     padding_bottom: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
     padding_left: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
     padding_right: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
     padding_top: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
-    page_break_after = NotImplemented
-    page_break_before = NotImplemented
-    page_break_inside = NotImplemented
-    perspective = NotImplemented
-    perspective_origin = NotImplemented
     pointer_events = NotImplemented
     position: Literal["static", "relative", "absolute"] = field(default="static", metadata=gen_metadata(inherited=False))
-    quotes = NotImplemented
     resize = NotImplemented
     right: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     scroll_behavior = NotImplemented
-    cssText = NotImplemented
-    length = NotImplemented
-    parentRule = NotImplemented
-    table_layout = NotImplemented
-    tab_size = NotImplemented
     text_align: Literal["left", "center", "right"] = field(default="left", metadata=gen_metadata(inherited=True))
-    text_align_last = NotImplemented
     text_decoration = NotImplemented
     text_decoration_color = NotImplemented
     text_decoration_line = NotImplemented
     text_decoration_style = NotImplemented
-    text_indent = NotImplemented
-    text_justify = NotImplemented
-    text_overflow = NotImplemented
     text_transform = NotImplemented
-    text_shadow = NotImplemented
+    text_shadow_color = NotImplemented
+    text_shadow_offset = NotImplemented
+    text_shadow_radius = NotImplemented
     top: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
     # Transform properties are not included and there is no current plan to include them
     unicode_bidi: str = NotImplemented
     user_select = NotImplemented
     vertical_align = NotImplemented
     visibility = NotImplemented
-    white_space = NotImplemented
     width: SizeType = field(default="auto", metadata=gen_metadata(inherited=False))
-    word_break = NotImplemented
-    word_spacing = NotImplemented
-    word_wrap = NotImplemented
-    will_change = NotImplemented
-    writing_mode = NotImplemented
     z_index: str = NotImplemented
     
     def __init__(self, **kwargs):
@@ -228,12 +159,6 @@ class Style():
         else:
             raise AttributeError(f"'Style' object does not support property: '{name}'")
     
-    # def __setattr__(self, name: str, value: Any) -> None:
-    #     print(f"Setting {name} to {value}")
-    #     if name in self.__dataclass_fields__:
-    #         super().__setattr__(name, value)
-    #     else:
-    #         raise AttributeError(f"'Style' object does not support property: '{name}'")
     
     def get_defined_fields(self) -> set[str]:
         """
@@ -241,7 +166,7 @@ class Style():
         """
         return {k for k, v in vars(self).items() if k[0] != "_"}
     
-    def get_ordered_attributes(self, include: Optional[Iterable[str]] = None) -> list[str]:
+    def get_ordered_attributes(self, include: Optional[Iterable[str]] = None) -> list[str]: # TODO add ignore defaults param instead of always ignoring defaults
         if include is not None:
             include = set(include)
             return [(k, getattr(self, k)) for k in self._order if k[0] != "_" and k in include]
@@ -331,3 +256,9 @@ class Style():
         
     def to_dict(self) -> dict[str, Any]:
         return {k: getattr(self, k) for k in self._order if k[0] != "_"}
+
+    def __repr__(self) -> str:
+        return f"Style({', '.join([f'{k}={getattr(self, k)}' for k in self._order if k[0] != '_'])})"
+    
+    def __str__(self) -> str:
+        return str(self.to_dict())

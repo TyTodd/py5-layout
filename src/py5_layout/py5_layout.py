@@ -4,13 +4,14 @@ from py5_layout.style import Style
 from py5_layout.parent_manager import ParentManager
 
 class Py5Layout:
-    def __init__(self, style: Style = Style(), width: int = 500, height: int = 500):
-        self.layout_manager = LayoutManager(width, height)
+    def __init__(self, style: Style = Style(), width: int = 500, height: int = 500, debug: bool = False):
+        self.layout_manager = LayoutManager(width, height, debug=debug)
         self.parent_manager = ParentManager()
         # TODO: add BorderManager, ShadowManager, ColorManager, and BackgroundManager
         self.id_counter = 0
         self.style = style
         self.elements = []
+        
     
     def register(self, element: Element, root: bool = False):
         """
@@ -31,7 +32,7 @@ class Py5Layout:
     
     def __enter__(self):
         Element.set_py5_layout(self)
-        self.root = Element(style=self.style, root=True)
+        self.root = Element(style=self.style, root=True, name="root")
         self.root.__enter__()
         return self
     

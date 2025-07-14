@@ -1,0 +1,12 @@
+// Node Tree
+digraph {
+	0 [label=root]
+	1 [label=div1]
+	0 -> 1
+	0 [label=root]
+	2 [label=div2]
+	0 -> 2
+	2 [label=div2]
+	3 [label=div3]
+	2 -> 3
+}

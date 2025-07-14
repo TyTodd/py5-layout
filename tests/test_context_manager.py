@@ -4,7 +4,6 @@ from py5_layout.py5_layout import Py5Layout
 def test_context_manager():
     with Py5Layout() as layout: 
         with Element() as e1:
-            print("e1", e1)
             with Element() as e2:
                 assert e1.get_parent() is not None
                 assert e1.get_parent()[1] == 0

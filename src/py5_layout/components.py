@@ -6,6 +6,5 @@ class Div(Element):
         super().__init__(**kwargs)
     
     def draw(self):
-        # print(f"drawing div {self._id}", self.x, self.y, self.width, self.height)
         self.draw_background()
         py5.rect(self.x, self.y, self.width, self.height)

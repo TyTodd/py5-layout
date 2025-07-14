@@ -48,23 +48,53 @@ position_arg_to_poga: dict[str, YGPositionType] = {
     "relative": YGPositionType.Relative,
     "absolute": YGPositionType.Absolute,
 }
+
+flex_direction_arg_to_poga: dict[str, YGFlexDirection] = {
+    "column": YGFlexDirection.Column,
+    "column-reverse": YGFlexDirection.ColumnReverse,
+    "row": YGFlexDirection.Row,
+    "row-reverse": YGFlexDirection.RowReverse,
+}
+
+
+flex_wrap_arg_to_poga: dict[str, YGWrap] = {
+    "nowrap": YGWrap.NoWrap,
+    "wrap": YGWrap.Wrap,
+    "wrap-reverse": YGWrap.WrapReverse,
+}
+
+justify_arg_to_poga: dict[str, YGJustify] = {
+    "flex-start": YGJustify.FlexStart,
+    "center": YGJustify.Center,
+    "flex-end": YGJustify.FlexEnd,
+    "space-between": YGJustify.SpaceBetween,
+    "space-around": YGJustify.SpaceAround,
+    "space-evenly": YGJustify.SpaceEvenly,
+}
     
 class LayoutManager:
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, debug: bool = False):
         self.last_hash = None
         self.current_hash = None
         self.id_node_map: Dict[int, YGNodeRef] = {}
         self.registered_ids: Set[int] = set()
         self.layout_width = width
         self.layout_height = height
+        self.debug = debug
+        if debug:
+            self.id_to_element_map: Dict[YGNodeRef, "Element"] = {} # TODO change to node_to_element_map for optimization
     
     def register(self, element: "Element", root: bool = False):
-        # TODO: use children of element to insert/swap in the correct position. Using parent it wrong.
+        # TODO: make sure this approach is correct. Might be better touse children of element to insert/swap in the correct position. Using parent may be wrong.
         if root:
             self.root = element
         self.registered_ids.add(element._id)
         if element._id not in self.id_node_map:
             self.id_node_map[element._id] = YGNodeNew()
+        
+        if self.debug:
+            self.id_to_element_map[element._id] = element # MARK id_to_element_map -> node_to_element_map
+        
         if element.get_parent() is None:
             return
         
@@ -93,18 +123,20 @@ class LayoutManager:
     def clean(self):
         for id in self.id_node_map:
             if id not in self.registered_ids:
-                print("freeing", id)
                 YGNodeFree(self.id_node_map[id])
         self.registered_ids.clear()
     
     def resolve(self, element: "Element"):
-        include = ["align_content", "align_items", "align_self", 
-                   "direction", "display", "height", "left", 
+        include = ["align_content", "align_items", "align_self",  # TODO add flex_basis
+                   "direction", "display", "flex", "flex_direction", 
+                   "flex_grow", "flex_shrink", "flex_wrap",
+                   "height", "justify_content","left", 
                    "margin_bottom", "margin_left", "margin_right", 
                    "margin_top", "max_height", "max_width", 
                    "min_height", "min_width", "padding_bottom", 
                    "padding_left", "padding_right", "padding_top", 
                    "position", "right", "top", "width"]
+        
         style = element.style
         node = self.id_node_map[element._id]
         for k, v in style.get_ordered_attributes(include=include):
@@ -128,6 +160,25 @@ class LayoutManager:
     def get_margin(self, element: "Element", edge: Literal["left", "right", "top", "bottom"]):
         return YGNodeLayoutGetMargin(self.id_node_map[element._id], edge_arg_to_poga[edge])
     
+    def get_node_tree(self):
+        if not self.debug:
+            raise ValueError("Debug mode must be enabled to get the node tree")
+        from graphviz import Digraph
+        dot = Digraph(comment="Node Tree")
+        def get_node_tree_helper(node: YGNodeRef):
+            if node is None:
+                return
+            for index in range(YGNodeGetChildCount(node)):
+                child_node = YGNodeGetChild(node, index)
+                element = self.node_to_element(node)
+                child_element = self.node_to_element(child_node)
+                dot.node(str(element._id), label=str(element.name) if element.name is not None else "none")
+                dot.node(str(child_element._id), label=str(child_element.name) if child_element.name is not None else "none")
+                dot.edge(str(element._id), str(child_element._id))
+                get_node_tree_helper(child_node)
+        get_node_tree_helper(self.id_node_map[self.root._id])
+        return dot
+        
     
     @staticmethod
     def align_content(node: YGNodeRef, value: str):
@@ -150,6 +201,26 @@ class LayoutManager:
         YGNodeStyleSetDisplay(node, display_arg_to_poga[value])
     
     @staticmethod
+    def flex(node: YGNodeRef, value: int):
+        YGNodeStyleSetFlex(node, value)
+    
+    @staticmethod
+    def flex_direction(node: YGNodeRef, value: str):
+        YGNodeStyleSetFlexDirection(node, flex_direction_arg_to_poga[value])
+    
+    @staticmethod
+    def flex_grow(node: YGNodeRef, value: float):
+        YGNodeStyleSetFlexGrow(node, value)
+    
+    @staticmethod
+    def flex_shrink(node: YGNodeRef, value: float):
+        YGNodeStyleSetFlexShrink(node, value)
+    
+    @staticmethod
+    def flex_wrap(node: YGNodeRef, value: str): 
+        YGNodeStyleSetFlexWrap(node, flex_wrap_arg_to_poga[value])
+    
+    @staticmethod
     def height(node: YGNodeRef, value: str | int):
         value_type, parsed_value = Style.parse_value(value)
         if parsed_value == "auto":
@@ -160,6 +231,10 @@ class LayoutManager:
             YGNodeStyleSetHeight(node, parsed_value)
         else:
             raise ValueError(f"Invalid value for height: {value}")
+    
+    @staticmethod
+    def justify_content(node: YGNodeRef, value: str):
+        YGNodeStyleSetJustifyContent(node, justify_arg_to_poga[value])
     
     @staticmethod
     def left(node: YGNodeRef, value: str | int):
@@ -301,3 +376,10 @@ class LayoutManager:
         else:
             raise ValueError(f"Invalid value for {position}: {value}")
     
+    def node_to_element(self, node: YGNodeRef):
+        if not self.debug:
+            raise ValueError("Debug mode must be enabled to use 'node_to_element()'")
+        for id, other_node in self.id_node_map.items():
+            if YGNodeIsSame(node, other_node):
+                return self.id_to_element_map[id]
+        return None
