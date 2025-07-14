@@ -45,7 +45,7 @@ Follow instructions to install Java 17 from py5's website [here](https://py5codi
 
 ## Usage
 
-In this library, the `with` statement is used to create a layout context.
+In this library, the with statement is used to create a hierarchical layout context, where each nested with block defines a child node within its parent container.
 
 ```python
 from py5_layout import *
@@ -145,6 +145,138 @@ this renders the following:
 - Style: A style object that can be used to style the layout.
 - Py5Layout: The main layout object that can be used to create the layout.
 - Element: The base class for all elements.
+
+### Style Reference
+
+Style closely follows React Native's style system. Since the py5-layout uses Yoga.
+
+```python
+GlobalType = Literal["inherit", "initial"]
+AlignType = Literal["auto", "flex-start", "center", "flex-end", "stretch", "baseline", "space-between", "space-around"]
+JustifyType = Literal["flex-start", "center", "flex-end", "space-between", "space-around", "space-evenly"]
+PositionMarginType = str | float | Literal["auto"]
+SizeType = float | str | Literal["auto"]
+MaxSizeType = float | str | Literal["none"]
+MinSizeType = float | str | Literal["auto"]
+PaddingType = float | str
+ColorType = str | Tuple | int | float
+
+class Style():
+    align_content: AlignType | GlobalType = field(default="auto", metadata=gen_metadata(inherited=False))
+    align_items: AlignType | GlobalType = field(default="auto", metadata=gen_metadata(inherited=False))
+    align_self: AlignType | GlobalType = field(default="auto", metadata=gen_metadata(inherited=False))
+    all: Any = NotImplemented
+    # Animation properties are not included and there is no current plan to include them
+    background_attachment = NotImplemented
+    background_blend_mode = NotImplemented
+    background_clip = NotImplemented
+    background_color: ColorType = field(default="transparent", metadata=gen_metadata(inherited=False))
+    background_image: str = NotImplemented
+    background_origin = NotImplemented
+    background_position = NotImplemented
+    background_repeat = NotImplemented
+    background_size = NotImplemented
+    border: str = NotImplemented
+    border_bottom: str = NotImplemented
+    border_bottom_color: str = NotImplemented
+    border_bottom_left_radius: str = NotImplemented
+    border_bottom_right_radius: str = NotImplemented
+    border_bottom_style: str = NotImplemented
+    border_bottom_width: str = NotImplemented
+    border_collapse: str = NotImplemented
+    border_color: str = NotImplemented
+    border_image = NotImplemented
+    border_image_outset = NotImplemented
+    border_image_repeat = NotImplemented
+    border_image_slice = NotImplemented
+    border_image_source = NotImplemented
+    border_image_width = NotImplemented
+    border_left: str = NotImplemented
+    border_left_color: str = NotImplemented
+    border_left_style: str = NotImplemented
+    border_left_width: str = NotImplemented
+    border_radius: str = NotImplemented
+    border_right_color: str = NotImplemented
+    border_right: str = NotImplemented
+    border_right_style: str = NotImplemented
+    border_right_width: str = NotImplemented
+    border_top_color: str = NotImplemented
+    border_top: str = NotImplemented
+    border_top_left_radius: str = NotImplemented
+    border_top_right_radius: str = NotImplemented
+    border_top_style: str = NotImplemented
+    border_top_width: str = NotImplemented
+    border_style: str = NotImplemented
+    border_spacing: str = NotImplemented
+    border_width: int | str | Tuple = NotImplemented
+    bottom: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    box_shadow = NotImplemented
+    box_sizing = NotImplemented
+    color: ColorType = field(default=(0,0,0), metadata=gen_metadata(inherited=True))
+    column_gap = NotImplemented
+    direction: Literal["ltr", "rtl", "inherit", "initial"] = field(default="ltr", metadata=gen_metadata(inherited=True))
+    display: Literal["flex", "none"] = field(default="flex", metadata=gen_metadata(inherited=False))
+    filter = NotImplemented
+    flex: int = field(default=0, metadata=gen_metadata(inherited=False))
+    flex_basis: str = NotImplemented
+    flex_direction: Literal["row", "row-reverse", "column", "column-reverse"] = field(default="column", metadata=gen_metadata(inherited=False))
+    flex_grow: float = field(default=0, metadata=gen_metadata(inherited=False))
+    flex_shrink: float = field(default=0, metadata=gen_metadata(inherited=False))
+    flex_wrap: Literal["nowrap", "wrap", "wrap-reverse"] = field(default="nowrap", metadata=gen_metadata(inherited=False))
+    font_family: str = field(default="Serif", metadata=gen_metadata(inherited=True))
+    font_size: int | str = field(default=16, metadata=gen_metadata(inherited=True))
+    font_style: str = field(default="normal", metadata=gen_metadata(inherited=True))
+    font_variant = NotImplemented
+    font_weight = NotImplemented
+    height: SizeType = field(default="auto", metadata=gen_metadata(inherited=False))
+    hyphens = NotImplemented
+    isolation = NotImplemented
+    justify_content: JustifyType | GlobalType = field(default="flex-start", metadata=gen_metadata(inherited=False))
+    left: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    letter_spacing = NotImplemented
+    line_height: float | str = field(default=1.2, metadata=gen_metadata(inherited=True))
+    margin_bottom: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    margin_left: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    margin_right: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    margin_top: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    max_height: MaxSizeType = field(default="none", metadata=gen_metadata(inherited=False))
+    max_width: MaxSizeType = field(default="none", metadata=gen_metadata(inherited=False))
+    min_height: MinSizeType = field(default="auto", metadata=gen_metadata(inherited=False))
+    min_width: MinSizeType = field(default="auto", metadata=gen_metadata(inherited=False))
+    mix_blend_mode = NotImplemented
+    object_fit = NotImplemented
+    outline_color = NotImplemented
+    outline_offset = NotImplemented
+    outline_style = NotImplemented
+    outline_width = NotImplemented
+    overflow = NotImplemented
+    padding_bottom: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
+    padding_left: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
+    padding_right: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
+    padding_top: PaddingType = field(default=0, metadata=gen_metadata(inherited=False))
+    pointer_events = NotImplemented
+    position: Literal["static", "relative", "absolute"] = field(default="static", metadata=gen_metadata(inherited=False))
+    resize = NotImplemented
+    right: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    scroll_behavior = NotImplemented
+    text_align: Literal["left", "center", "right"] = field(default="left", metadata=gen_metadata(inherited=True))
+    text_decoration = NotImplemented
+    text_decoration_color = NotImplemented
+    text_decoration_line = NotImplemented
+    text_decoration_style = NotImplemented
+    text_transform = NotImplemented
+    text_shadow_color = NotImplemented
+    text_shadow_offset = NotImplemented
+    text_shadow_radius = NotImplemented
+    top: PositionMarginType = field(default="auto", metadata=gen_metadata(inherited=False))
+    # Transform properties are not included and there is no current plan to include them
+    unicode_bidi: str = NotImplemented
+    user_select = NotImplemented
+    vertical_align = NotImplemented
+    visibility = NotImplemented
+    width: SizeType = field(default="auto", metadata=gen_metadata(inherited=False))
+    z_index: str = NotImplemented
+```
 
 **coming soon**
 
